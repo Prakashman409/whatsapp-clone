@@ -2,11 +2,15 @@ const express=require('express');
 const mongoose=require('mongoose');
 const bodyParser=require('body-parser');
 const ejs=require('ejs');
+const multer=require('multer');
 const loginRoute=require('./routes/loginRoute');
 const registerRoute=require('./routes/registerRoute');
 const homeRoute=require('./routes/homeRoute');
 const passport = require('passport');
 const userModel = require('./model/userModel');
+const path =require('path');
+
+
 const app=express();
 
 
@@ -21,6 +25,7 @@ mongoose.connect(mongoosePath,{
     console.log('database connected')
 }).catch((err)=>console.log(err));
 
+app.use(express.static(path.join(__dirname,'public')));
 app.use(passport.initialize());
 passport.serializeUser((user,done)=>{
      done(null,user.id);
@@ -34,6 +39,7 @@ passport.deserializeUser((id,done)=>{
 app.set('view engine','ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
+app.use(express.json());
 
 
 

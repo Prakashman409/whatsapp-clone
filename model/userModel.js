@@ -16,7 +16,12 @@ const registerData=new mongoose.Schema({
     password:{
         type:String,
         required:true
+    },
+    userImage:{
+        type:String,
+        default:'default.png'
     }
 });
 
 module.exports=mongoose.model('registerInfo',registerData);
+

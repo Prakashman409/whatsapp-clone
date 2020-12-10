@@ -1,11 +1,24 @@
 const express=require('express');
 const registerRoute=express.Router();
 const bcrypt=require('bcrypt');
+const multer=require('multer')
 const userModel=require('../model/userModel');
+const path=require('path');
+const verifyJwt = require('../authenticate/passportLocal');
+const storage=multer.diskStorage({
+    destination:(req,file,cb)=>{
+        cb(null,__dirname+'/userPhoto');
+    },
+    filename:(req,file,cb)=>{
+        cb(null,file.fieldname);
+    }
+})
+
+const upload=multer({storage:storage});
 
 
 registerRoute.route('/')
-.get((req,res)=>{
+.get(verifyJwt,(req,res)=>{
     res.send('i am from registerRoute');
 })
 .post((req,res)=>{
@@ -45,6 +58,29 @@ registerRoute.route('/')
               }
           })
 
+})
+
+registerRoute.route('/upload')
+.post(verifyJwt,upload.single('file'),(req,res)=>{
+
+    console.log(id);
+   
+        if(!req.file){
+            return res.send('no file uploaded');
+        } else{
+           
+        userModel.findOneAndUpdate({
+            email:req.user.id
+        },{
+            'userImage':filename
+        }, (err,result)=>{
+            if(err){
+                throw err;
+            }
+        }
+        )
+        }   
+        res.send('profile pic uploaded');
 })
 
 module.exports=registerRoute; 

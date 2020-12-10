@@ -31,8 +31,9 @@ passport.use(new localStrategy({
 
 //verifying jwt
 
-const verifyJwt=(req,res)=>{
+const verifyJwt=(req,res,next)=>{
     var token=req.headers['x-access-token'];
+    var id;
     if(!token){
         return res.status(401).send({auth:false,message:'no token provided'});
     }
@@ -40,8 +41,10 @@ const verifyJwt=(req,res)=>{
         if(err){
             return res.status(500).send({auth:false,message:'failed to authenticate token'})
         }
-        res.status(200).send('done');
+        id=decoded;
+        next();
     })
+   
 }
 
 module.exports=verifyJwt;
