@@ -41,7 +41,7 @@ const verifyJwt=(req,res,next)=>{
         if(err){
             return res.status(500).send({auth:false,message:'failed to authenticate token'})
         }
-        id=decoded;
+        req.user=decoded;
         next();
     })
    
