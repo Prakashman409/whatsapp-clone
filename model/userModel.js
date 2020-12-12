@@ -17,10 +17,38 @@ const registerData=new mongoose.Schema({
         type:String,
         required:true
     },
+    username:{
+        type:String,
+        required:true,
+        unique:true
+    },
     userImage:{
         type:String,
         default:'default.png'
-    }
+    },
+    sentRequest:[{
+        username:{
+            type:String,
+            ref:'User'
+        }
+    }],
+    receiveRequest:[{
+      userId:{
+          type:mongoose.Schema.Types.ObjectId,
+          ref:'userModel'
+      },
+      username:{
+          type:String
+      }
+    }],
+    friendsList:[{
+        friendId:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'userModel'
+        },
+        friendName:{type:String}
+    }],
+    totalRequest:{type:Number}
 });
 
 module.exports=mongoose.model('registerInfo',registerData);

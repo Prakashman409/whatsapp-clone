@@ -41,7 +41,11 @@ const verifyJwt=(req,res,next)=>{
         if(err){
             return res.status(500).send({auth:false,message:'failed to authenticate token'})
         }
-        req.user=decoded;
+        userModel.findById({
+            _id:decoded.id
+        }).then((user)=>{
+           req.user=user;
+        })
         next();
     })
    

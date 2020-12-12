@@ -13,6 +13,12 @@ loginRoute.route('/')
     var token=jwt.sign({id:req.user._id},'prakash')
     res.status(200).send({auth:true,message:"login done",token:token});
 });
+loginRoute.route('/logout')
+.get((req,res)=>{
+    req.logout();
+    res.redirect('/login');
+})
+
 
 module.exports=loginRoute;
 
