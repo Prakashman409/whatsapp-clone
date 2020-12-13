@@ -29,7 +29,7 @@ const registerData=new mongoose.Schema({
     sentRequest:[{
         username:{
             type:String,
-            ref:'User'
+            ref:'userModel'
         }
     }],
     receiveRequest:[{
